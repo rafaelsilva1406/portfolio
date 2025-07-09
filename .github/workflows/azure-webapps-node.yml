@@ -38,12 +38,25 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     
-    - uses: azure/login@v2
+    #- uses: azure/login@v2
+    #  with:
+    #    creds: ${{ secrets.AZURE_CREDENTIALS }}
+    #    enable-AzPSSession: true
+    
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
       with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
-        enable-AzPSSession: true
+       node-version: ${{ env.NODE_VERSION }}
+       cache: 'npm'
 
-    - uses: bacongobbler/azure-blob-storage-upload@main
+    - name: npm install, build, and test
+      run: |
+       npm install
+       npm run build --if-present
+ #       npm run start --if-present
+ 
+    - name: az blob storage
+      uses: bacongobbler/azure-blob-storage-upload@main
       with:
         source_dir: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
         container_name: ${{ env.AZURE_CONTAINER_NAME }}
@@ -51,17 +64,6 @@ jobs:
         extra_args: '--pattern *.tar.gz'
         # WARNING: this will overwrite existing blobs in your blob storage
         overwrite: 'true'
- #   - name: Set up Node.js
- #     uses: actions/setup-node@v4
- #     with:
- #       node-version: ${{ env.NODE_VERSION }}
- #       cache: 'npm'
-
- #   - name: npm install, build, and test
- #     run: |
- #       npm install
- #       npm run build --if-present
- #       npm run start --if-present
 
     # Deploy web app using Azure credentials
  #   - uses: azure/webapps-deploy@v3
@@ -70,6 +72,6 @@ jobs:
  #       package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
 
     # Azure logout 
-    - name: logout
-      run: |
-        az logout
+    #- name: logout
+    #  run: |
+    #    az logout
