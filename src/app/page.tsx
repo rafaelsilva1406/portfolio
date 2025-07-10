@@ -5,6 +5,7 @@ export default function Home() {
     <div className={styles.page}>
       <main className={styles.main}>
        <h1>Hello World!</h1>
+       <p>Simple NextJS with Bootstrap Application Base</p>
       </main>
       <footer className={styles.footer}>
       </footer>
