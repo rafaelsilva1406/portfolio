@@ -23,11 +23,13 @@ on:
   workflow_dispatch:
 
 env:
+  AZURE_CONTAINER_NAME: '$web'
   AZURE_WEBAPP_NAME: portfolio-rs    # set this to your application's name
-  AZURE_WEBAPP_PACKAGE_PATH: '.'      # set this to the path to your web app project, defaults to the repository root
+  AZURE_WEBAPP_PACKAGE_PATH: 'out'      # set this to the path to your web app project, defaults to the repository root
   NODE_VERSION: '20.x'                # set this to the node version to use
 
 permissions:
+  id-token: write
   contents: read
 
 jobs:
@@ -36,31 +38,40 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     
-    - uses: azure/login@v2
-      with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
-        environment: 'AzureUSGovernment'
-        enable-AzPSSession: true
+    #- uses: azure/login@v2
+    #  with:
+    #    creds: ${{ secrets.AZURE_CREDENTIALS }}
+    #    enable-AzPSSession: true
     
     - name: Set up Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: ${{ env.NODE_VERSION }}
-        cache: 'npm'
+       node-version: ${{ env.NODE_VERSION }}
+       cache: 'npm'
 
     - name: npm install, build, and test
       run: |
-        npm install
-        npm run build --if-present
-        npm run start --if-present
+       npm install
+       npm run build --if-present
+ #       npm run start --if-present
+ 
+    - name: az blob storage
+      uses: bacongobbler/azure-blob-storage-upload@main
+      with:
+        source_dir: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+        container_name: ${{ env.AZURE_CONTAINER_NAME }}
+        connection_string: ${{ secrets.AZURE_STORAGE_CONNECTION }}
+        # extra_args: 'az storage blob upload-batch'
+        # WARNING: this will overwrite existing blobs in your blob storage
+        overwrite: 'true'
 
     # Deploy web app using Azure credentials
-    - uses: azure/webapps-deploy@v3
-      with:
-        app-name: ${{ env.AZURE_WEBAPP_NAME }}
-        package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+ #   - uses: azure/webapps-deploy@v3
+ #     with:
+ #       app-name: ${{ env.AZURE_WEBAPP_NAME }}
+ #       package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
 
     # Azure logout 
-    - name: logout
-      run: |
-        az logout
+    #- name: logout
+    #  run: |
+    #    az logout
