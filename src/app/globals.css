@@ -1,8 +1,15 @@
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import 'bootstrap/dist/css/bootstrap.min.css';
 
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --primary-color: #0369a1;
+  --secondary-color: #374151;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -21,7 +28,7 @@ body {
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -41,4 +48,116 @@ a {
   html {
     color-scheme: dark;
   }
+}
+
+/* Custom theme colors for dark grey and blue */
+.theme-dark-grey {
+  background-color: var(--secondary-color);
+  color: #f3f4f6;
+}
+
+.theme-blue {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.btn-primary-custom {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.btn-primary-custom:hover {
+  background-color: #075985;
+  border-color: #075985;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(3, 105, 161, 0.3);
+}
+
+/* Enhanced card animations */
+.hover-shadow-lg {
+  transition: all 0.3s ease;
+}
+
+.hover-shadow-lg:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Utility classes for consistent spacing */
+.min-vh-50 {
+  min-height: 50vh;
+}
+
+/* Enhanced progress bars */
+.progress {
+  background-color: #e9ecef;
+  border-radius: 10px;
+}
+
+.progress-bar {
+  border-radius: 10px;
+  transition: width 0.6s ease;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary-color);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #075985;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .display-4 {
+    font-size: 2.5rem;
+  }
+  
+  .lead {
+    font-size: 1.1rem;
+  }
+}
+
+/* Loading animations */
+.placeholder-glow .placeholder {
+  animation: placeholder-glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes placeholder-glow {
+  to {
+    opacity: 0.2;
+  }
+}
+
+/* Theme customization variables for future use */
+[data-theme="custom"] {
+  --primary-color: #2563eb;
+  --secondary-color: #1f2937;
+  --background: #ffffff;
+  --foreground: #111827;
+}
+
+[data-theme="dark"] {
+  --primary-color: #3b82f6;
+  --secondary-color: #374151;
+  --background: #111827;
+  --foreground: #f9fafb;
+}
+
+[data-theme="custom"][data-theme="dark"] {
+  --background: #0f172a;
+  --foreground: #f1f5f9;
 }
