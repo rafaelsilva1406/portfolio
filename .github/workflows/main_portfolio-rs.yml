@@ -58,7 +58,7 @@ jobs:
       
       - name: List directory
         run: |
-         ls .
+         ls node_modules/
 
       - name: Login to Azure
         uses: azure/login@v2
