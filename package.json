@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev -p 8080 --turbopack",
     "build": "next build",
-    "start": "node_modules/next/dist/bin/next start",
+    "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
