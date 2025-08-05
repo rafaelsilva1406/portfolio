@@ -36,7 +36,7 @@ jobs:
           # Remove dev dependencies but keep the built app
           npm prune --production
           # Create zip with all necessary files including node_modules
-          zip -r release.zip ./* .next -qr -x "*.git*" "*.github*"
+          zip -r release.zip . -x "*.git*" "*.github*"
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
@@ -61,7 +61,7 @@ jobs:
       
       - name: List directory
         run: |
-         ls .
+         ls ./node_modules/.bin/
 
       - name: Login to Azure
         uses: azure/login@v2
