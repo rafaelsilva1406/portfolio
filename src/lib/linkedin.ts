@@ -206,15 +206,16 @@ export class LinkedInAPI {
 }
 
 // Utility function to initialize LinkedIn API
-export function createLinkedInAPI(): LinkedInAPI | null {
-  const accessToken = process.env.LINKEDIN_ACCESS_TOKEN;
+export function createLinkedInAPI(accessToken?: string | null): LinkedInAPI | null {
+  const token = accessToken || process.env.LINKEDIN_ACCESS_TOKEN;
   
-  if (!accessToken || accessToken === 'your_linkedin_access_token_here') {
-    console.warn('LinkedIn access token not configured. Using mock data.');
+  if (!token || token === 'your_linkedin_access_token_here') {
+    console.warn('LinkedIn access token not provided. Using mock data.');
+    // Return API instance with mock token to enable mock data fallback
     return new LinkedInAPI('mock_token');
   }
   
-  return new LinkedInAPI(accessToken);
+  return new LinkedInAPI(token);
 }
 
 // Profile data formatter

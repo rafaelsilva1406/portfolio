@@ -1,14 +1,16 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { createLinkedInAPI, formatLinkedInProfile } from '@/lib/linkedin';
 
-export async function GET() {
+export async function GET(request: NextRequest) {
+  const searchParams = request.nextUrl.searchParams;
+  const accessToken = searchParams.get('token');
   try {
-    const linkedInAPI = createLinkedInAPI();
+    const linkedInAPI = createLinkedInAPI(accessToken);
     
     if (!linkedInAPI) {
       return NextResponse.json(
-        { error: 'LinkedIn API not configured' },
-        { status: 500 }
+        { error: 'LinkedIn API not configured. Access token required.' },
+        { status: 400 }
       );
     }
 
@@ -39,8 +41,8 @@ export async function GET() {
         id: 'mock-id',
         name: process.env.PORTFOLIO_NAME || 'John Doe',
         headline: process.env.PORTFOLIO_TITLE || 'Software Developer',
-        location: 'San Francisco, CA',
-        vanityName: 'johndoe',
+        location: 'Oxnard, CA',
+        vanityName: 'rafaelsilva',
         profilePicture: '/api/placeholder/avatar/150'
       },
       experiences: [

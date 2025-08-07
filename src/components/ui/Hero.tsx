@@ -1,6 +1,3 @@
-'use client';
-
-import { useState, useEffect } from 'react';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 
 interface ProfileData {
@@ -12,27 +9,12 @@ interface ProfileData {
   };
 }
 
-export default function Hero() {
-  const [profileData, setProfileData] = useState<ProfileData | null>(null);
-  const [loading, setLoading] = useState(true);
+interface HeroProps {
+  profileData: ProfileData | null;
+  loading: boolean;
+}
 
-  useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        const response = await fetch('/api/linkedin/profile');
-        if (response.ok) {
-          const data = await response.json();
-          setProfileData(data);
-        }
-      } catch (error) {
-        console.error('Error fetching profile:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProfile();
-  }, []);
+export default function Hero({ profileData, loading }: HeroProps) {
 
   return (
     <section className="theme-blue py-5">
