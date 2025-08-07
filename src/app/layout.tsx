@@ -4,6 +4,7 @@ import "./globals.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Header from "@/components/ui/Header";
 import Footer from "@/components/ui/Footer";
+import { Suspense } from "react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,7 +32,7 @@ export default function RootLayout({
         <div className="d-flex flex-column min-vh-100">
           <Header />
           <main className="flex-grow-1">
-            {children}
+            <Suspense>{children}</Suspense>
           </main>
           <Footer />
         </div>
